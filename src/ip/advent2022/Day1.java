@@ -17,7 +17,7 @@ public class Day1 {
         while (sc.hasNextLine()){
             String line = sc.nextLine();
             if(line.trim().isEmpty()){
-                pq.add(curr);
+                pq.offer(curr);
                 if(pq.size()>3){
                     pq.poll();
                 }
@@ -26,7 +26,7 @@ public class Day1 {
                 curr+=Integer.parseInt(line);
             }
         }
-        pq.add(curr);
+        pq.offer(curr);
         if(pq.size()>3){
             pq.poll();
         }
