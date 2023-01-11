@@ -60,8 +60,6 @@ public class Day25 {
             sum = sum.add(BigInteger.valueOf(x));
         }
         System.out.println(sum);
-
         System.out.println(d.intToSnafu(sum));
-        System.out.println(d.intToSnafu(new BigInteger("31242554356360")));
     }
 }
