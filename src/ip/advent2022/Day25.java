@@ -1,22 +1,22 @@
 package ip.advent2022;
 
-package com.pd;
-
+import java.io.File;
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.TreeMap;
 
 public class Day25 {
     Map<Character,Integer> m =new HashMap<>();
-    TreeMap<Integer, String> map =new TreeMap<>();
     public Day25(){
         m.put('-', -1);
         m.put('=', -2);
     }
 
-    public int SnafuToInt(String s){
+    public long snafuToInt(String s){
         int pwr=0;
-        int result=0;
+        long result=0;
         for(int i=s.length()-1;i>=0;i--){
             char c = s.charAt(i);
             if(Character.isDigit(c)){
@@ -29,55 +29,39 @@ public class Day25 {
         }
         return result;
     }
-    public String intToSnafu(int num){
+    public String intToSnafu(BigInteger num){
         StringBuilder sb = new StringBuilder();
         int prev=0;
 
-        while(num>0){
-            int x = num % 5;
-            if(x == 4){
+        while(num.signum()>0){
+            BigInteger x = num.mod(BigInteger.valueOf(5));
+            if(x.intValue() == 4){
                 sb.append("-");
-                num = num/5 + 1;
-            }else if(x ==3){
+                num = num.divide(BigInteger.valueOf(5)).add(BigInteger.valueOf(1));
+            }else if(x.intValue() ==3){
                 sb.append("=");
-                num = num/5 + 1;
+                num = num.divide(BigInteger.valueOf(5)).add(BigInteger.valueOf(1));
             }else{
-                String s = Integer.toString(x);
+                String s = x.toString();
                 sb.append(s);
-                num = num/5;
+                num = num.divide(BigInteger.valueOf(5));
             }
         }
         return sb.reverse().toString();
     }
-
-    public int findHP(int num){
-        return (int)(Math.log(num)/ Math.log(5)) + 1;
-    }
-
-
-
-    public static void main(String[] args) {
-
+    public static void main(String[] args) throws Exception {
         Day25 d = new Day25();
-        d.constructMapping();
-
-        System.out.println(d.intToSnafu(353));
-    }
-
-    public void constructMapping(){
-        map.put(-2 , "=");
-        map.put(-1, "-");
-        map.put(1, "1");
-        map.put(3, "5=");
-        map.put(4, "5-");
-        for(int i=1;i<8;i++){
-            int num =(int) Math.pow(5,i);
-            String repeat = "0".repeat(i-1);
-            int lowerNum = (int) Math.pow(5,i-1);
-            map.put(num-lowerNum, "1-" + repeat);
-            map.put(num-lowerNum*2, "1=" + repeat);
-
+        File file = new File("resources/day25.txt");
+        Scanner sc = new Scanner(file);
+        BigInteger sum = new BigInteger("0");
+        while (sc.hasNextLine()){
+            String line = sc.nextLine();
+            long x = d.snafuToInt(line);
+            sum = sum.add(BigInteger.valueOf(x));
         }
+        System.out.println(sum);
 
+        System.out.println(d.intToSnafu(sum));
+        System.out.println(d.intToSnafu(new BigInteger("31242554356360")));
     }
 }
